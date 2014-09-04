@@ -9,6 +9,15 @@ REPO_LIST = [
 ]
 
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+
+
 @task
 def update_repos(REPO_LIST=REPO_LIST):
     """
@@ -24,7 +33,9 @@ def update_repos(REPO_LIST=REPO_LIST):
                 local("git checkout master")
                 local("git reset --hard origin/master")
                 local("git submodule update")
-                print '\n********\n* {repo} is up-to-date.\n********'.format(
+                print '\n********'
+                print '* ' + bcolors.OKGREEN + '{repo} is up-to-date.'.format(
                     repo=repo)
+                print bcolors.ENDC + '********'
             except:
-                print("You don't have this repo: " + repo)
+                print(bcolors.FAIL + "You don't have this repo: " + repo)
