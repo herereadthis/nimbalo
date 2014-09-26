@@ -5,6 +5,16 @@ REPO_LIST = [
         'bellmaker': {
             'dependencies': ['mossflower']
         }
+    },
+    {
+        'sunflash': {
+            'dependencies': []
+        }
+    },
+    {
+        'mossflower': {
+            'dependencies': []
+        }
     }
 ]
 
@@ -24,8 +34,9 @@ def update_repos(REPO_LIST=REPO_LIST):
     Helper function to checkout all the repos, and then fetch and reset.
     You will have a fresh copy of master for each repo.
     """
-    for repository in REPO_LIST:
+    for i, repository in enumerate(REPO_LIST):
         repo = repository.keys()[0]
+        print repo
 
         with lcd("../%s" % repo):
             try:
