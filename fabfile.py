@@ -29,6 +29,14 @@ class bcolors:
 
 
 @task
+def verify(var=5):
+    """
+    Verify Task - Prints your integer arg or 5 if undefined.
+    """
+    print bcolors.OKBLUE + "\nvar = {var}".format(var=var) + bcolors.ENDC
+
+
+@task
 def update_repos(REPO_LIST=REPO_LIST):
     """
     Helper function to checkout all the repos, and then fetch and reset.
