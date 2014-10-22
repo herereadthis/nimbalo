@@ -1,4 +1,5 @@
 import os
+import time
 from fabric.api import task, local, lcd
 
 REPO_LIST = [
@@ -59,6 +60,58 @@ def verify(var=5):
     Verify Task - Prints your integer arg or 5 if undefined.
     """
     print bcolors.OKBLUE + "\nvar = {var}".format(var=var) + bcolors.ENDC
+
+
+def grab_repo(repo):
+    with lcd("../"):
+        clone_this = "https://github.com/herereadthis/{repo}.git".format(
+            repo=repo)
+        git_clone_this = "git clone {clone_this}".format(
+            clone_this=clone_this)
+
+        print bcolors.OKGREEN + "\n\n\n********\n********"
+        print "Cloning {repo} repo...\n********\n********".format(repo=repo)
+        print "\n\n" + bcolors.ENDC
+        time.sleep(1)
+        local(git_clone_this)
+        with lcd(repo):
+            local("npm install")
+            local("./node_modules/bower/bin/bower install")
+            local("git submodule init")
+            local("git submodule update")
+            print bcolors.OKGREEN + "\n\n\n********\n********"
+            print "Installed {repo}!\n********\n********".format(repo=repo)
+            print "\n\n\n\n" + bcolors.ENDC
+            time.sleep(1)
+
+
+def grunt_build(repo):
+    with lcd("../"):
+        print bcolors.OKGREEN + "\n\n\n********\n********"
+        print "Running Grunt for {repo}. This may fail on grunt test.".format(
+            repo=repo)
+        print "********\n********\n\n\n\n" + bcolors.ENDC
+        with lcd(repo):
+            local("./node_modules/grunt-cli/bin/grunt")
+    time.sleep(1)
+
+
+@task
+def clone_repo(repo_list=REPO_LIST):
+    """
+    No args: gets all frontend repos. Specify a particular repo with arg.
+    """
+    if repo_list == REPO_LIST:
+        for repository in repo_list:
+            repo = repository.keys()[0]
+            grab_repo(repo)
+        for repository in repo_list:
+            repo = repository.keys()[0]
+            grunt_build(repo)
+    else:
+        repo = repo_list
+        grab_repo(repo)
+        grunt_build(repo)
 
 
 @task
