@@ -17,6 +17,16 @@ REPO_LIST = [
         'mossflower': {
             'dependencies': []
         }
+    },
+    {
+        'noonvale': {
+            'dependencies': []
+        }
+    },
+    {
+        'redwall': {
+            'dependencies': []
+        }
     }
 ]
 
